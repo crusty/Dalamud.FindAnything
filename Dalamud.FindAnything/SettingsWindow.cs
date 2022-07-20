@@ -17,12 +17,12 @@ public class SettingsWindow : Window
     private readonly FindAnythingPlugin plugin;
     private uint flags;
     private Configuration.OpenMode openMode;
-    private VirtualKey shiftShiftKey;
+    private ImGuiKey shiftShiftKey;
     private int shiftShiftDelay;
     private ImGuiKey comboModifierKey;
-    private VirtualKey comboModifier2Key;
-    private VirtualKey comboKey;
-    private VirtualKey wikiComboKey;
+    private ImGuiKey comboModifier2Key;
+    private ImGuiKey comboKey;
+    private ImGuiKey wikiComboKey;
     private bool preventPassthrough;
     private List<Configuration.MacroEntry> macros = new();
     private bool aetheryteGilCost;
@@ -33,7 +33,7 @@ public class SettingsWindow : Window
     private Dictionary<string, float> constants = new();
     private Vector2 posOffset;
     private bool onlyWiki;
-    private VirtualKey quickSelectKey;
+    private ImGuiKey quickSelectKey;
     private List<Configuration.SearchSetting> order = new();
     private Configuration.ScrollSpeed speed;
     private bool notInCombat;
@@ -617,22 +617,6 @@ public class SettingsWindow : Window
                 this.constants.Add(x.Key, x.Value);
             }
         });
-    }
-
-    private void VirtualKeySelect(string text, ref VirtualKey chosen)
-    {
-        if (ImGui.BeginCombo(text, chosen.GetFancyName()))
-        {
-            foreach (var key in Enum.GetValues<VirtualKey>().Where(x => x != VirtualKey.LBUTTON))
-            {
-                if (ImGui.Selectable(key.GetFancyName(), key == chosen))
-                {
-                    chosen = key;
-                }
-            }
-
-            ImGui.EndCombo();
-        }
     }
 
     private void VirtualKeySelect(string text, ref ImGuiKey chosen)

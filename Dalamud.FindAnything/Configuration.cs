@@ -4,7 +4,6 @@ using System;
 using System.Collections.Generic;
 using System.Numerics;
 using Dalamud.FindAnything.Game;
-using Dalamud.Game.ClientState.Keys;
 using ImGuiNET;
 
 namespace Dalamud.FindAnything
@@ -30,15 +29,15 @@ namespace Dalamud.FindAnything
 
         public uint ShiftShiftDelay { get; set; } = 40;
         public ImGuiKey ComboModifier { get; set; } = ImGuiKey.LeftCtrl;
-        public VirtualKey ComboModifier2 { get; set; } = VirtualKey.NO_KEY;
-        public VirtualKey ComboKey { get; set; } = VirtualKey.T;
+        public ImGuiKey ComboModifier2 { get; set; } = ImGuiKey.None;
+        public ImGuiKey ComboKey { get; set; } = ImGuiKey.T;
         public bool PreventPassthrough { get; set; } = true;
 
-        public VirtualKey WikiComboKey { get; set; } = VirtualKey.NO_KEY;
+        public ImGuiKey WikiComboKey { get; set; } = ImGuiKey.None;
 
-        public VirtualKey ShiftShiftKey { get; set; } = VirtualKey.OEM_MINUS;
+        public ImGuiKey ShiftShiftKey { get; set; } = ImGuiKey.Minus;
 
-        public VirtualKey QuickSelectKey { get; set; } = VirtualKey.CONTROL;
+        public ImGuiKey QuickSelectKey { get; set; } = ImGuiKey.LeftCtrl;
 
         public bool WikiModeNoSpoilers { get; set; } = true;
         public bool TeamCraftForceBrowser { get; set; } = false;

@@ -1266,7 +1266,7 @@ namespace Dalamud.FindAnything
 
             Input.Update();
 
-            if (Input.IsDown(VirtualKey.ESCAPE))
+            if (ImGui.IsKeyDown(ImGuiKey.Escape))
             {
                 CloseFinder();
             }
@@ -1275,7 +1275,7 @@ namespace Dalamud.FindAnything
                 switch (Configuration.Open)
                 {
                     case Configuration.OpenMode.ShiftShift:
-                        var shiftDown = Input.IsDown(Configuration.ShiftShiftKey);
+                        var shiftDown = ImGui.IsKeyDown(Configuration.ShiftShiftKey);
 
                         if (shiftDown && !shiftArmed)
                         {
@@ -1308,10 +1308,10 @@ namespace Dalamud.FindAnything
                         break;
                     case Configuration.OpenMode.Combo:
                         var mod = Configuration.ComboModifier == ImGuiKey.None || ImGui.IsKeyDown(Configuration.ComboModifier);
-                        var mod2 = Configuration.ComboModifier2 == VirtualKey.NO_KEY || Input.IsDown(Configuration.ComboModifier2);
-                        var key = Configuration.ComboKey == VirtualKey.NO_KEY || Input.IsDown(Configuration.ComboKey);
+                        var mod2 = Configuration.ComboModifier2 == ImGuiKey.None || ImGui.IsKeyDown(Configuration.ComboModifier2);
+                        var key = Configuration.ComboKey == ImGuiKey.None || ImGui.IsKeyDown(Configuration.ComboKey);
 
-                        var wiki = Configuration.WikiComboKey != VirtualKey.NO_KEY && Input.IsDown(Configuration.WikiComboKey);
+                        var wiki = Configuration.WikiComboKey != ImGuiKey.None && ImGui.IsKeyDown(Configuration.WikiComboKey);
 
                         if (mod && mod2 && key)
                         {
@@ -2212,7 +2212,7 @@ namespace Dalamud.FindAnything
             ImGui.Text(FontAwesomeIcon.Search.ToIconString());
             ImGui.PopFont();
 
-            if (!ImGui.IsWindowFocused(ImGuiFocusedFlags.RootAndChildWindows) || ImGui.IsKeyDown((ImGuiKey) VirtualKey.ESCAPE))
+            if (!ImGui.IsWindowFocused(ImGuiFocusedFlags.RootAndChildWindows) || ImGui.IsKeyDown(ImGuiKey.Escape))
             {
                 PluginLog.Verbose("Focus loss or escape");
                 closeFinder = true;
@@ -2229,7 +2229,7 @@ namespace Dalamud.FindAnything
                 {
                     var childSize = ImGui.GetWindowSize();
 
-                    var isCtrl = ImGui.IsKeyDown((ImGuiKey)Configuration.ComboModifier);
+                    var isCtrl = ImGui.IsKeyDown(Configuration.ComboModifier);
                     var isDown = ImGui.IsKeyDown(ImGuiKey.DownArrow);
                     var isUp = ImGui.IsKeyDown(ImGuiKey.UpArrow);
                     var isPgUp = ImGui.IsKeyDown(ImGuiKey.PageUp);
@@ -2238,7 +2238,7 @@ namespace Dalamud.FindAnything
                     var numKeysPressed = new bool[10];
                     for (var i = 0; i < 9; i++)
                     {
-                        numKeysPressed[i] = ImGui.IsKeyPressed((ImGuiKey) VirtualKey.KEY_1 + i);
+                        numKeysPressed[i] = ImGui.IsKeyPressed(ImGuiKey._1 + i);
                     }
 
                     void CursorDown()
@@ -2355,7 +2355,7 @@ namespace Dalamud.FindAnything
 
                         ImGui.TextColored(ImGuiColors.DalamudGrey, result.CatName);
 
-                        if (i < 9 && Configuration.QuickSelectKey != VirtualKey.NO_KEY)
+                        if (i < 9 && Configuration.QuickSelectKey != ImGuiKey.None)
                         {
                             ImGui.SameLine(size.X - (65 * ImGuiHelpers.GlobalScale));
                             ImGui.TextColored(ImGuiColors.DalamudGrey, (i + 1).ToString());
