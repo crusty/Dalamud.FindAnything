@@ -1307,7 +1307,7 @@ namespace Dalamud.FindAnything
 
                         break;
                     case Configuration.OpenMode.Combo:
-                        var mod = Configuration.ComboModifier == VirtualKey.NO_KEY || Input.IsDown(Configuration.ComboModifier);
+                        var mod = Configuration.ComboModifier == ImGuiKey.None || ImGui.IsKeyDown(Configuration.ComboModifier);
                         var mod2 = Configuration.ComboModifier2 == VirtualKey.NO_KEY || Input.IsDown(Configuration.ComboModifier2);
                         var key = Configuration.ComboKey == VirtualKey.NO_KEY || Input.IsDown(Configuration.ComboKey);
 
@@ -1345,6 +1345,11 @@ namespace Dalamud.FindAnything
                 return;
 
             Keys[key] = false;
+        }
+
+        private static void UnsetKey(ImGuiKey key)
+        {
+            Keys[(int)key] = false;
         }
 
         private static bool CheckInDuty()
@@ -2122,6 +2127,7 @@ namespace Dalamud.FindAnything
                 return;
 
             var closeFinder = false;
+            var isInitialState = true;
 
             ImGuiHelpers.ForceNextWindowMainViewport();
 
@@ -2147,6 +2153,12 @@ namespace Dalamud.FindAnything
             ImGui.Begin("###findeverything", ImGuiWindowFlags.NoTitleBar | ImGuiWindowFlags.NoCollapse | ImGuiWindowFlags.NoResize | ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoScrollWithMouse);
 
             ImGui.PushItemWidth(size.X - (45 * ImGuiHelpers.GlobalScale));
+
+            if (isInitialState)
+            {
+                isInitialState = false;
+                ImGui.SetKeyboardFocusHere(0);
+            }
 
             if (!searchTerm.IsNullOrEmpty())
             {
@@ -2194,16 +2206,13 @@ namespace Dalamud.FindAnything
 
             ImGui.PopItemWidth();
 
-            if (ImGui.IsWindowFocused(ImGuiFocusedFlags.RootAndChildWindows) && !ImGui.IsAnyItemActive() && !ImGui.IsMouseClicked(ImGuiMouseButton.Left))
-                ImGui.SetKeyboardFocusHere(0);
-
             ImGui.SameLine();
 
             ImGui.PushFont(UiBuilder.IconFont);
             ImGui.Text(FontAwesomeIcon.Search.ToIconString());
             ImGui.PopFont();
 
-            if (!ImGui.IsWindowFocused(ImGuiFocusedFlags.RootAndChildWindows) || ImGui.IsKeyDown((int) VirtualKey.ESCAPE))
+            if (!ImGui.IsWindowFocused(ImGuiFocusedFlags.RootAndChildWindows) || ImGui.IsKeyDown((ImGuiKey) VirtualKey.ESCAPE))
             {
                 PluginLog.Verbose("Focus loss or escape");
                 closeFinder = true;
@@ -2220,16 +2229,16 @@ namespace Dalamud.FindAnything
                 {
                     var childSize = ImGui.GetWindowSize();
 
-                    var isCtrl = ImGui.IsKeyDown((int)Configuration.ComboModifier);
-                    var isDown = ImGui.IsKeyDown((int)VirtualKey.DOWN);
-                    var isUp = ImGui.IsKeyDown((int)VirtualKey.UP);
-                    var isPgUp = ImGui.IsKeyDown((int)VirtualKey.PRIOR);
-                    var isPgDn = ImGui.IsKeyDown((int)VirtualKey.NEXT);
+                    var isCtrl = ImGui.IsKeyDown((ImGuiKey)Configuration.ComboModifier);
+                    var isDown = ImGui.IsKeyDown(ImGuiKey.DownArrow);
+                    var isUp = ImGui.IsKeyDown(ImGuiKey.UpArrow);
+                    var isPgUp = ImGui.IsKeyDown(ImGuiKey.PageUp);
+                    var isPgDn = ImGui.IsKeyDown(ImGuiKey.PageDown);
 
                     var numKeysPressed = new bool[10];
                     for (var i = 0; i < 9; i++)
                     {
-                        numKeysPressed[i] = ImGui.IsKeyPressed((int) VirtualKey.KEY_1 + i);
+                        numKeysPressed[i] = ImGui.IsKeyPressed((ImGuiKey) VirtualKey.KEY_1 + i);
                     }
 
                     void CursorDown()
@@ -2376,7 +2385,7 @@ namespace Dalamud.FindAnything
                         clickedIndex = Array.IndexOf(numKeysPressed, true);
                     }
 
-                    if (ImGui.IsKeyPressed((int) VirtualKey.RETURN) || clickedIndex != -1)
+                    if (ImGui.IsKeyPressed(ImGuiKey.Enter) || clickedIndex != -1)
                     {
                         var index = clickedIndex == -1 ? selectedIndex : clickedIndex;
                         

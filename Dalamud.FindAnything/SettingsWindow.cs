@@ -19,7 +19,7 @@ public class SettingsWindow : Window
     private Configuration.OpenMode openMode;
     private VirtualKey shiftShiftKey;
     private int shiftShiftDelay;
-    private VirtualKey comboModifierKey;
+    private ImGuiKey comboModifierKey;
     private VirtualKey comboModifier2Key;
     private VirtualKey comboKey;
     private VirtualKey wikiComboKey;
@@ -633,5 +633,28 @@ public class SettingsWindow : Window
 
             ImGui.EndCombo();
         }
+    }
+
+    private void VirtualKeySelect(string text, ref ImGuiKey chosen)
+    {
+        if (ImGui.BeginCombo(text, GetFancyKeyName(chosen)))
+        {
+            foreach (var key in Enum.GetValues<ImGuiKey>())
+            {
+                if (ImGui.Selectable(GetFancyKeyName(key), key == chosen))
+                {
+                    chosen = key;
+                }
+            }
+
+            ImGui.EndCombo();
+        }
+    }
+
+    private string GetFancyKeyName(ImGuiKey key)
+    {
+        if (key == ImGuiKey.None)
+            return "No key";
+        return key.ToString();
     }
 }

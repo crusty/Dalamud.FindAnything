@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Numerics;
 using Dalamud.FindAnything.Game;
 using Dalamud.Game.ClientState.Keys;
+using ImGuiNET;
 
 namespace Dalamud.FindAnything
 {
@@ -28,7 +29,7 @@ namespace Dalamud.FindAnything
         public OpenMode Open { get; set; } = OpenMode.Combo;
 
         public uint ShiftShiftDelay { get; set; } = 40;
-        public VirtualKey ComboModifier { get; set; } = VirtualKey.CONTROL;
+        public ImGuiKey ComboModifier { get; set; } = ImGuiKey.LeftCtrl;
         public VirtualKey ComboModifier2 { get; set; } = VirtualKey.NO_KEY;
         public VirtualKey ComboKey { get; set; } = VirtualKey.T;
         public bool PreventPassthrough { get; set; } = true;
